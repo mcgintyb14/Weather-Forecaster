@@ -1,0 +1,8 @@
+#header-container {
+    background-image: linear-gradient(to right, rgb(141, 141, 190), navy);
+}
+
+h1 {
+    color: white;
+    text-align: center;
+}

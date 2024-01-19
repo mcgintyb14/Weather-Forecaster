@@ -4,12 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./Assets/css/style.css">
-    <title>Document</title>
+    <title>Weather Forecaster</title>
 </head>
 <body>
     <header id="header-container">
         <h1>Weather Dashboard</h1>
     </header>
+    <section id="search-container">
+        <form id="search-form">
+            <label for="city-input">City:</label>
+            <input type="text" id="city-input" placeholder="City name">
+            <button type="submit">Search</button>
+        </form>
+        <div id="recent-searches">
+            <ul id="recent-search-container">
+
+            </ul>
+        </div>
+    <section id="current-city-container">
+        <h2 id="current-city"></h2>
+        <ul id="current-city-forecast">
+        </ul>
+    </section>
+    <section id="5-day-container">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </section>
+    </section>
     
     <script src="./Assets/js/script.js"></script>
 </body>

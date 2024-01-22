@@ -6,3 +6,14 @@ h1 {
     color: white;
     text-align: center;
 }
+
+#search-button, #search-input {
+    max-width: 15%;
+    margin-left: 25px;
+    margin-top: 8px;
+}
+
+#city-label {
+    font-size: 28px;
+    font-weight: bolder;
+}

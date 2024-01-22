@@ -19,11 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(geoAPI)
             .then(response => response.json())
             .then(data => {
-                const latitudeDMS = data.results[0].annotations.DMS.lat; // Latitude
-                const longitudeDMS = data.results[0].annotations.DMS.lng; // Longitude
-
-                const latitude = convertDMSToDecimal(latitudeDMS);
-                const longitude = convertDMSToDecimal(longitudeDMS);
+                const latitude = data.results[0].annotations.DMS.lat; // Convert to Number
+                const longitude = data.results[0].annotations.DMS.lng; // Convert to Number
 
                 console.log('Latitude:', latitude);
                 console.log('Longitude:', longitude);
@@ -54,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('searchHistory', JSON.stringify(searchArray));
         console.log('Search input stored in local storage:', JSON.stringify(searchArray));
     }
-    
     function convertDMSToDecimal(dms) {
         const [degrees, minutes, seconds] = dms.split(/\s|['"]/).filter(Boolean).map(Number);
         const decimal = degrees + (minutes / 60) + (seconds / 3600);

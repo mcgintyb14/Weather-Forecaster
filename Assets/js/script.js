@@ -12,26 +12,34 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Search Array:', searchArray);
 
         const city = searchArray[0];
-        const country = searchArray[1];
+        const state = searchArray[1]
+        const country = searchArray[2];
 
-        let geoAPI = `https://api.opencagedata.com/geocode/v1/json?q=${city}+${country}&key=b378f52f4b0d4e9cb5a38bbee769e7f5`;
+        let geocodingAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
 
-        fetch(geoAPI)
+        fetch(geocodingAPI)
             .then(response => response.json())
             .then(data => {
-                const latitude = data.results[0].annotations.DMS.lat; // Convert to Number
-                const longitude = data.results[0].annotations.DMS.lng; // Convert to Number
+                if (data.length > 0) {
+                    const latitude = data[0].lat;
+                    const longitude = data[0].lon;
 
-                console.log('Latitude:', latitude);
-                console.log('Longitude:', longitude);
+                    console.log('Latitude:', latitude);
+                    console.log('Longitude:', longitude);
 
-                let weatherAPI = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=7b1eab3296911715f248b7a79b72ba34`;
+                    let weatherAPI = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=7b1eab3296911715f248b7a79b72ba34`;
 
-                fetch(weatherAPI)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data)
-                    })
+                    fetch(weatherAPI)
+                        .then(response => response.json())
+                        .then(weatherData => {
+                            console.log(weatherData);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching weather data:', error);
+                        });
+                } else {
+                    console.error('No geocoding data found for the given city and country.');
+                }
             })
             .catch(error => {
                 console.error('Error fetching geocoding data:', error);
@@ -51,12 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('searchHistory', JSON.stringify(searchArray));
         console.log('Search input stored in local storage:', JSON.stringify(searchArray));
     }
-    function convertDMSToDecimal(dms) {
-        const [degrees, minutes, seconds] = dms.split(/\s|['"]/).filter(Boolean).map(Number);
-        const decimal = degrees + (minutes / 60) + (seconds / 3600);
-        return decimal;
-    }
-
 });
 
 

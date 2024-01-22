@@ -14,35 +14,53 @@
         <header id="header-container">
             <h1>Weather Dashboard</h1>
         </header>
-        <section id="search-container">
-            <form class ="d-flex flex-column" id="search-form">
-                <label class="ml-4" id="city-label" for="search-input">Search For a City:</label>
-                <input type="text" id="search-input" placeholder="City name">
-                <button id="search-button" type="submit">Search</button>
-            </form>
-            <div id="recent-searches">
-                <ul class="list-group w-25 mt-5 ml-4" id="recent-search-container">
-                    <li class="list-group-item text-center">Cras justo odio</li>
-                    <li class="list-group-item text-center">Dapibus ac facilisis in</li>
-                    <li class="list-group-item text-center">Morbi leo risus</li>
-                    <li class="list-group-item text-center">Porta ac consectetur ac</li>
-                    <li class="list-group-item text-center">Vestibulum at eros</li>
-                </ul>
-            </div>
-        </section>
-        <section id="current-city-container">
-            <h2 id="current-city"></h2>
-            <ul id="current-city-forecast">
-            </ul>
-        </section>
-        <section id="5-day-container" class="d-flex flex-row justify-content-start align-self-start mr-5 text-white">
-            <div id="one-day-out-forecast" class="ml-4 card bg-secondary">Tomorrow</div>
-            <div id="two-days-out-forecast" class="ml-4 card bg-secondary">Two days</div>
-            <div id="three-days-out-forecast" class="ml-4 card bg-secondary">Three days</div>
-            <div id="four-days-out-forecast" class="ml-4 card bg-secondary">Four days</div>
-            <div id="five-days-out-forecast" class="ml-4 card bg-secondary">Five days</div>
-        </section>
-
+        <main class="d-flex flex-row">
+            <section id="search-container">
+                <form class="d-flex flex-column" id="search-form">
+                    <label class="ml-4" id="city-label"
+                        for="search-input">Search For a City:</label>
+                    <input type="text" id="search-input"
+                        placeholder="City name">
+                    <button id="search-button" type="submit">Search</button>
+                </form>
+                <div id="recent-searches">
+                    <ul class="list-group mt-5 ml-4"
+                        id="recent-search-container">
+                        <li class="list-group-item text-center">Cras justo
+                            odio</li>
+                        <li class="list-group-item text-center">Dapibus ac
+                            facilisis in</li>
+                        <li class="list-group-item text-center">Morbi leo
+                            risus</li>
+                        <li class="list-group-item text-center">Porta ac
+                            consectetur ac</li>
+                        <li class="list-group-item text-center">Vestibulum at
+                            eros</li>
+                    </ul>
+                </div>
+            </section>
+            <section class="d-flex flex-column ml-5" id="main-container">
+                <div id="current-city-container">
+                    <h2 id="current-city">Current City</h2>
+                    <ul id="current-city-forecast">
+                    </ul>
+                </div>
+                <section id="5-day-container"
+                    class="d-flex flex-row justify-content-start align-self-start mr-5 mt-5 text-white">
+                    <!-- <h2 class="text-danger">5 Day Forecast:</h2> -->
+                    <div id="one-day-out-forecast"
+                        class="ml-4 card bg-secondary">Tomorrow</div>
+                    <div id="two-days-out-forecast"
+                        class="ml-4 card bg-secondary">Two days</div>
+                    <div id="three-days-out-forecast"
+                        class="ml-4 card bg-secondary">Three days</div>
+                    <div id="four-days-out-forecast"
+                        class="ml-4 card bg-secondary">Four days</div>
+                    <div id="five-days-out-forecast"
+                        class="ml-4 card bg-secondary">Five days</div>
+                </section>
+            </section>
+        </main>
         <script src="./Assets/js/script.js"></script>
     </body>
 </html>

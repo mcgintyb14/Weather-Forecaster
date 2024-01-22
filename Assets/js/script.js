@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchButton = document.getElementById('search-button');
     let searchInput = document.getElementById('search-input');
 
+    const currentCity = document.getElementById('current-city');
+    function displayCurrentCity(city, state, country) {
+        currentCity.textContent = `${city} ${state}, ${country}`;
+    }
+
+
     searchButton.addEventListener('click', function (event) {
         event.preventDefault();
         console.log('Search button clicked');
@@ -32,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     fetch(weatherAPI)
                         .then(response => response.json())
                         .then(weatherData => {
+                            const temperatureKelvin = weatherData.list[0].main.temp;
+                            const temperatureFahrenheit = ((temperatureKelvin - 273.15) / 0.5556) + 32;
+                            
+                            console.log('Temperature in Fahrenheit:', temperatureFahrenheit);
+
                             console.log(weatherData);
                         })
                         .catch(error => {
@@ -47,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Store the search input to local storage
         storeSearchInput(searchArray);
+        displayCurrentCity(city, state, country);
     });
 
     // Function to split the search input
@@ -60,6 +72,8 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Search input stored in local storage:', JSON.stringify(searchArray));
     }
 });
+
+
 
 
 

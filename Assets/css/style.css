@@ -7,20 +7,36 @@ h1 {
     text-align: center;
 }
 
+h2 {
+    font-size: 25px;
+    color: black;
+    padding-left: 10px;
+}
+
+#current-city {
+    margin-left: 10px;
+}
+
 #search-button, #search-input {
     margin-left: 25px;
     margin-top: 8px;
 }
 
 #city-label {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bolder;
 }
 
 #current-city-container {
     border: solid black 2px;
+    min-width: 75%;
+    max-width: 80%;
 }
 
-#current-city {
-    color: black;
+#one-day-out-forecast, 
+#two-days-out-forecast,
+#three-days-out-forecast,
+#four-days-out-forecast,
+#five-days-out-forecast {
+    width: 110px;
 }

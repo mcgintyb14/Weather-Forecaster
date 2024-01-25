@@ -38,7 +38,10 @@ h2 {
 #three-days-out-forecast,
 #four-days-out-forecast,
 #five-days-out-forecast {
-    width: 150px;
+    width: 250px;
+    max-width: 250px;
+    height: 250px;
+    font-size: 20px;
 }
 
 #recent-searches {

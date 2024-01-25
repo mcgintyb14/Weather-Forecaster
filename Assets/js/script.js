@@ -6,25 +6,18 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentCity = document.getElementById('current-city');
     const recentSearchContainer = document.getElementById('recent-search-container');
     const maxRecentSearches = 10;
-    let weatherData; // Define weatherData globally to make it accessible across functions
 
     function displayCurrentCity(city, state, country) {
         const stateText = state ? `${state} ` : '';
         const countryText = country ? `${country}` : '';
-        currentCity.textContent = `${city} ${stateText}${countryText}`;
+    
+        const currentDate = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = currentDate.toLocaleDateString(undefined, options);
+    
+        currentCity.innerHTML = `${city} ${stateText}${countryText} - ${formattedDate}`;
     }
-
-    function insertCurrentWeather(temperatureFahrenheit, wind, humidity) {
-        const currentWeatherList = document.getElementById('current-city-forecast');
-        currentWeatherList.textContent = ''; // Clear existing content
-
-        appendWeatherItem(currentWeatherList, 'Temperature', `${temperatureFahrenheit}°F`);
-        appendWeatherItem(currentWeatherList, 'Wind', `${wind} m/s`);
-        appendWeatherItem(currentWeatherList, 'Humidity', `${humidity}%`);
-
-        updateFiveDayForecast(weatherData); // Pass weatherData here
-    }
-
+    
     function updateFiveDayForecast(weatherData) {
         const forecastContainers = [
             document.getElementById('one-day-out-forecast'),
@@ -33,44 +26,155 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('four-days-out-forecast'),
             document.getElementById('five-days-out-forecast')
         ];
-
-        // Assuming weatherData is an array containing 5-day forecast data
+    
+        // Ensure weatherData and weatherData.list exist before accessing properties
         if (weatherData && weatherData.list) {
+            // Assuming weatherData is an array containing 5-day forecast data
             for (let i = 0; i < 5; i++) {
-                const forecastIndex = i * 8;
-                const temperatureKelvin = weatherData.list[forecastIndex].main.temp;
-                const temperatureFahrenheit = Math.round((temperatureKelvin - 273.15) * 9/5 + 32);
-                const wind = weatherData.list[forecastIndex].wind.speed;
-                const humidity = weatherData.list[forecastIndex].main.humidity;
-
-                const forecastContainer = forecastContainers[i];
-                forecastContainer.textContent = ''; // Clear existing content
-
-                appendWeatherItem(forecastContainer, 'Temperature', `${temperatureFahrenheit}°F`);
-                appendWeatherItem(forecastContainer, 'Wind', `${wind} m/s`);
-                appendWeatherItem(forecastContainer, 'Humidity', `${humidity}%`);
+                const forecastIndex = i * 8; // Each day has multiple entries, we skip 8 for the next day
+    
+                // Check if weatherData.list[forecastIndex] exists before accessing its properties
+                if (weatherData.list[forecastIndex]) {
+                    const date = new Date(weatherData.list[forecastIndex].dt * 1000); // Convert timestamp to date
+                    const options = { weekday: 'long', month: 'long', day: 'numeric' };
+                    const formattedDate = date.toLocaleDateString(undefined, options);
+    
+                    const weatherCondition = weatherData.list[forecastIndex].weather[0].main;
+                    const iconClass = getWeatherIconClass(weatherCondition);
+                    const temperatureKelvin = weatherData.list[forecastIndex].main.temp;
+                    const temperatureFahrenheit = Math.round((temperatureKelvin - 273.15) * 9/5 + 32);
+                    const wind = weatherData.list[forecastIndex].wind.speed;
+                    const humidity = weatherData.list[forecastIndex].main.humidity;
+    
+                    const forecastContainer = forecastContainers[i];
+                    forecastContainer.textContent = ''; // Clear existing content
+    
+                    // Add the date with the icon below it
+                    const dateElement = document.createElement('div');
+                    dateElement.textContent = formattedDate;
+                    forecastContainer.appendChild(dateElement);
+    
+                    const iconElement = document.createElement('i');
+                    iconElement.className = iconClass;
+                    forecastContainer.appendChild(iconElement);
+    
+                    // Add each weather data as a separate list item
+                    appendWeatherItem(forecastContainer, 'Temperature', `${temperatureFahrenheit}°F`);
+                    appendWeatherItem(forecastContainer, 'Wind', `${wind} m/s`);
+                    appendWeatherItem(forecastContainer, 'Humidity', `${humidity}%`);
+                }
             }
-        } else {
-            console.error('Invalid or missing weather data.');
         }
     }
-
-    function appendWeatherItem(container, label, value) {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${label}: ${value}`;
-        container.appendChild(listItem);
+    
+    
+    function insertCurrentWeather(temperatureFahrenheit, wind, humidity) {
+        const currentWeatherList = document.getElementById('current-city-forecast');
+        currentWeatherList.textContent = ''; // Clear existing content
+    
+        // Check if temperatureFahrenheit, wind, and humidity are valid before using them
+        if (temperatureFahrenheit !== undefined && wind !== undefined && humidity !== undefined) {
+            appendWeatherItem(currentWeatherList, 'Temperature', `${temperatureFahrenheit}°F`);
+            appendWeatherItem(currentWeatherList, 'Wind', `${wind} m/s`);
+            appendWeatherItem(currentWeatherList, 'Humidity', `${humidity}%`);
+        }
+    
+        updateFiveDayForecast();
     }
+    
+    
+    function getWeatherIconClass(weatherCondition) {
+        // Map weather conditions to Font Awesome icon classes
+        const iconMap = {
+            'Clear': 'fas fa-sun',
+            'Clouds': 'fas fa-cloud',
+            'Rain': 'fas fa-cloud-showers-heavy',
+            'Snow': 'fas fa-snowflake'
+        };
+    
+        return iconMap[weatherCondition] || 'fas fa-question'; // Default to a question mark icon if condition not found
+    }
+    
+    
+
+    function appendWeatherItem(container, label, value, iconClass) {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<i class="${iconClass}"></i> ${label}: ${value}`;
+        container.appendChild(listItem);
+    }    
 
     function updateRecentSearches() {
         const recentSearches = getRecentSearches();
         recentSearchContainer.textContent = '';
+    
         for (const search of recentSearches) {
             const listItem = document.createElement('li');
-            listItem.textContent = search;
+            const link = document.createElement('a');
+    
+            link.textContent = search;
+            link.href = '#'; // Set a placeholder href; you can use a proper link if needed
+            link.addEventListener('click', function () {
+                performSearch(search);
+            });
+    
+            listItem.appendChild(link);
             recentSearchContainer.appendChild(listItem);
         }
     }
 
+    function performSearch(search) {
+        // Split the search value and perform the search
+        const searchArray = search.split(' ');
+        const city = searchArray[0];
+        const state = searchArray[1];
+        const country = searchArray[2];
+    
+        let geocodingAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
+    
+        fetch(geocodingAPI)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const latitude = data[0].lat;
+                    const longitude = data[0].lon;
+    
+                    console.log('Latitude:', latitude);
+                    console.log('Longitude:', longitude);
+    
+                    let weatherAPI = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=7b1eab3296911715f248b7a79b72ba34`;
+    
+                    fetch(weatherAPI)
+                        .then(response => response.json())
+                        .then(weatherData => {
+                            const temperatureKelvin = weatherData.list[0].main.temp;
+                            const temperatureFahrenheit = Math.round((temperatureKelvin - 273.15) * 9/5 + 32);
+                            const currentWind = weatherData.list[0].wind.speed;
+                            const currentHumidity = weatherData.list[0].main.humidity;
+    
+                            console.log('Temperature in Fahrenheit:', temperatureFahrenheit);
+    
+                            insertCurrentWeather(temperatureFahrenheit, currentWind, currentHumidity);
+                            updateFiveDayForecast(weatherData);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching weather data:', error);
+                        })
+                        .finally(() => {
+                            // Call updateRecentSearches here to ensure it runs after weather data is fetched
+                            updateRecentSearches();
+                        });
+                } else {
+                    console.error('No geocoding data found for the given city and country.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching geocoding data:', error);
+            });
+    
+        storeSearchInput(searchArray);
+        displayCurrentCity(city, state, country);
+    }
+    
     updateRecentSearches(); // Display initial recent searches
 
     searchButton.addEventListener('click', function (event) {
@@ -99,8 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     fetch(weatherAPI)
                         .then(response => response.json())
-                        .then(weatherDataResponse => {
-                            weatherData = weatherDataResponse; // Assign the response to weatherData
+                        .then(weatherData => {
                             const temperatureKelvin = weatherData.list[0].main.temp;
                             const temperatureFahrenheit = Math.round((temperatureKelvin - 273.15) * 9/5 + 32);
                             const currentWind = weatherData.list[0].wind.speed;
@@ -109,6 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             console.log('Temperature in Fahrenheit:', temperatureFahrenheit);
 
                             insertCurrentWeather(temperatureFahrenheit, currentWind, currentHumidity);
+                            updateFiveDayForecast(weatherData); // Pass weatherData to the function
                         })
                         .catch(error => {
                             console.error('Error fetching weather data:', error);
@@ -127,8 +231,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function splitSearch() {
-        return searchInput.value.split(' ');
-    }
+        // Split the search input by commas
+        const searchArray = searchInput.value.split(',');
+    
+        // Trim each part to remove leading and trailing spaces
+        const trimmedSearchArray = searchArray.map(part => part.trim());
+    
+        return trimmedSearchArray;
+    }    
 
     function storeSearchInput(searchArray) {
         const recentSearches = getRecentSearches();

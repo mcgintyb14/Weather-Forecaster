@@ -94,8 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
         return iconMap[weatherCondition] || 'fas fa-question'; // Default to a question mark icon if condition not found
     }
-    
-    
 
     function appendWeatherItem(container, label, value, iconClass) {
         const listItem = document.createElement('li');
@@ -108,19 +106,17 @@ document.addEventListener('DOMContentLoaded', function () {
         recentSearchContainer.textContent = '';
     
         for (const search of recentSearches) {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-    
-            link.textContent = search;
-            link.href = '#'; // Set a placeholder href; you can use a proper link if needed
-            link.addEventListener('click', function () {
+            const button = document.createElement('button');
+            button.textContent = search;
+            button.className = 'btn btn-outline-secondary m-2 bg-dark text-white';
+            button.addEventListener('click', function () {
                 performSearch(search);
             });
     
-            listItem.appendChild(link);
-            recentSearchContainer.appendChild(listItem);
+            recentSearchContainer.appendChild(button);
         }
     }
+    
 
     function performSearch(search) {
         // Split the search value and perform the search

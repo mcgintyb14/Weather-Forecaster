@@ -1,5 +1,6 @@
 #header-container {
     background-image: linear-gradient(to right, rgb(141, 141, 190), navy);
+    width: 100%;
 }
 
 h1 {
@@ -31,6 +32,10 @@ h2 {
     border: solid black 2px;
     min-width: 75%;
     max-width: 80%;
+}
+
+#five-day-container {
+    width: 100%;
 }
 
 #one-day-out-forecast, 

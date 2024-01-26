@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const state = searchArray[1];
         const country = searchArray[2];
     
-        let geocodingAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
+        let geocodingAPI = `https://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
     
         fetch(geocodingAPI)
             .then(response => response.json())
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const state = searchArray[1];
         const country = searchArray[2];
 
-        let geocodingAPI = `http://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
+        let geocodingAPI = `https://api.openweathermap.org/geo/1.0/direct?q=${city},${state},${country}&limit=1&appid=7b1eab3296911715f248b7a79b72ba34`;
 
         fetch(geocodingAPI)
             .then(response => response.json())

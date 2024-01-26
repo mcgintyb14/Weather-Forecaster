@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function getWeatherIconClass(weatherCondition) {
         // Map weather conditions to Font Awesome icon classes
         const iconMap = {
-            'Clear': 'fas fa-sun',
+            'Clear': 'fas fa-sun yellow-icon',
             'Clouds': 'fas fa-cloud',
             'Rain': 'fas fa-cloud-showers-heavy',
             'Snow': 'fas fa-snowflake'
@@ -117,10 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     
+    
 
     function performSearch(search) {
         // Split the search value and perform the search
-        const searchArray = search.split(' ');
+        const searchArray = search.split(',');
         const city = searchArray[0];
         const state = searchArray[1];
         const country = searchArray[2];
@@ -237,11 +238,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }    
 
     function storeSearchInput(searchArray) {
+        const searchInput = searchArray.join(', '); // Join with commas
         const recentSearches = getRecentSearches();
-        recentSearches.unshift(searchArray.join(' '));
+        recentSearches.unshift(searchInput); // Add the search input directly
         const trimmedSearches = recentSearches.slice(0, maxRecentSearches);
         localStorage.setItem('recentSearches', JSON.stringify(trimmedSearches));
     }
+    
 
     function getRecentSearches() {
         const storedSearches = localStorage.getItem('recentSearches');

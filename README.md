@@ -9,10 +9,10 @@ To use this page, you can simply type any city into the search bar, and then the
 PLEASE NOTE: Due to limitations with the OpenWeather API, you must incluce the City, State, and Country to appropriately fetch data from the API. This is because, without proper specification, the API will not know which specifc city to call. However, for cities wihtin the US, you should be able to only include the city and state name to receive the weather data.
 
 ## Screenshot
-
+![Deployed Site](./Assets/Images/Deployed-Site.png)
 
 ## Deployed Link
-
+https://mcgintyb14.github.io/Weather-Forecaster1/
 
 ## Installation
 N/A
